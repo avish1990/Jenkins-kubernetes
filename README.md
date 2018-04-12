@@ -1,2 +1,2 @@
 # Jenkins-kubernetes
-Run Jenkins app with local Persistent volume and NFS for multi node kubernetes cluster.
+Run Jenkins kubernetes cluster with local Persistent volume or NFS.
