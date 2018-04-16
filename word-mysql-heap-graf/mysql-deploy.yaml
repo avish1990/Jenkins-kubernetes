@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deploy
+  labels:
+    app: wordpress
+spec:
+  selector:
+   matchLabels:
+     app: wordpress
+     tier: mysql
+  strategy:
+    type: Recreate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+    spec:
+            #securityContext:
+            # fsGroup: 1000
+        containers:
+        - name: mysql
+          image: mysql:5.6
+          volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: mysql-pvol
+          resources:
+              limits: 
+                cpu: 500m
+                memory: 800Mi
+              requests:
+                cpu: 100m
+                memory: 200Mi
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-pass
+                key: password
+          ports:
+          - name: mysql
+            containerPort: 3306
+        volumes:
+           - name: mysql-pvol
+             persistentVolumeClaim:
+                  claimName: mysql-claim

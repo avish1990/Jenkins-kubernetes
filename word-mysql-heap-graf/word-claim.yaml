@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: word-claim
+  labels:
+    apps: wordpress
+spec:
+     selector:
+       matchLabels:
+         vol: word
+     accessModes:
+       - ReadWriteMany
+     resources:
+             requests:
+               storage: 1Gi
