@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus
+data:
+  prometheus.yml: |-
+    scrape_configs:
+      - job_name: 'etcd'
+        scheme: https
+        scrape_interval: 5s
+        tls_config:
+          ca_file: /kube-config/ca.crt
+          cert_file: /kube-config/healthcheck-client.crt
+          key_file: /kube-config/healthcheck-client.key
+
+        static_configs:
+                - targets: ['localhost:2379']
+
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+                - targets: ['localhost:9090']
+
+
+      - job_name: 'mysql-node'
+        scrape_interval: 5s
+        static_configs:
+                - targets: ['10.44.0.50:9100']
+                  labels:
+                    alias: mysql
+
+      - job_name: 'mysql'
+        scrape_interval: 1m
+        static_configs:
+                - targets: ['10.44.0.50:9104']
+                  labels:
+                    alias: mysql
+        params:
+           collect[]:
+              - perf_schema.tableiowaits
+              - perf_schema.indexiowaits
+              - perf_schema.tablelocks
+     
+      - job_name: 'mysql global status'
+        scrape_interval: 15s
+        static_configs:
+                # - targets: ['mysql-svc.development.svc.cluster.local:9104']
+              - targets: ['10.44.0.50:9104']
+        params:
+            collect[]:
+               - global_status
