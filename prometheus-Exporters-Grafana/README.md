@@ -19,10 +19,11 @@ tar zxf node_exporter-0.12.0rc3.linux-amd64.tar.gz -C /opt/prometheus_exporters
 tar zxf mysqld_exporter-0.7.1.linux-amd64.tar.gz -C /opt/prometheus_exporters
 
 
+
 2. Start Node exporter. port 9100
 ./node_exporter &
 
- 
+
 
 3. Mysqld exporter setup. Port 9104
 
@@ -40,6 +41,13 @@ password=<passwd>
 EOF
 
 ./mysqld_exporter -config.my-cnf=".my.cnf" &
+
+
+
+
+
+
+
 
 
 ----> Grafana setup
