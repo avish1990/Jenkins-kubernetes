@@ -56,5 +56,7 @@ Existing setup: Mysql POD is up and runnning with cluster IP.
       # kubectl create -f grafana.yaml
 
     For prometheus integration: Just add the Promtheus Data Source in Grafana UI. 
+    The DataSource URL can have the Prometheus service name or IP.
+    http://prometheus:9090
 
 
